@@ -1,4 +1,4 @@
-#
+
 # Copyright 2014-2015 Ettus Research
 #
 
@@ -66,6 +66,12 @@ proc ::vivado_utils::initialize_project { {save_to_disk 0} } {
         } elseif [expr [lsearch {.v} $src_ext] >= 0] {
             puts "BUILDER: Adding Verilog : $src_file"
             read_verilog $src_file
+        } elseif [expr [lsearch {.sv} $src_ext] >= 0] {
+            puts "BUILDER: Adding SystemVerilog : $src_file"
+            set src_name [file tail $src_file ]
+            if [expr [lsearch {axi_crossbar_intf.sv} $src_name] <0 ] {
+              read_verilog $src_file
+            }
         } elseif [expr [lsearch {.xdc} $src_ext] >= 0] {
             puts "BUILDER: Adding XDC     : $src_file"
             read_xdc $src_file
